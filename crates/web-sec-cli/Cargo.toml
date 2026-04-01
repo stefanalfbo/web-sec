@@ -18,4 +18,6 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.54", features = ["derive"] }
+crossterm = "0.28"
+ratatui = "0.29"
 web-sec-core = { version = "0.1.0", path = "../web-sec-core" }
