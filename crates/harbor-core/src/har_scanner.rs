@@ -3,6 +3,7 @@ use std::{collections::HashMap, fs::File, path::Path};
 use crate::{
     analysis_result::AnalysisResult, analyze::Analyze, analyze_cookies::AnalyzeCookies,
     analyze_cors::AnalyzeCORS, analyze_csp::AnalyzeCSP, analyze_hsts::AnalyzeHSTS,
+    analyze_permissions_policy::AnalyzePermissionsPolicy,
     analyze_referrer_policy::AnalyzeReferrerPolicy,
     analyze_x_content_type_options::AnalyzeXContentTypeOptions,
     analyze_x_frame_options::AnalyzeXFrameOptions, scoring::ScanScore, severity::Severity,
@@ -98,6 +99,7 @@ fn analyze_response(headers: &[(&str, &str)]) -> Vec<AnalysisResult> {
     }
 
     results.extend(AnalyzeHSTS::new(get("strict-transport-security")).analyze());
+    results.extend(AnalyzePermissionsPolicy::new(get("permissions-policy")).analyze());
     results.extend(AnalyzeXFrameOptions::new(get("x-frame-options")).analyze());
     results.extend(AnalyzeXContentTypeOptions::new(get("x-content-type-options")).analyze());
     results.extend(AnalyzeReferrerPolicy::new(get("referrer-policy")).analyze());
@@ -293,6 +295,35 @@ mod tests {
         let r = find(&report.results, "HTTP Strict Transport Security (HSTS)").unwrap();
         assert_eq!(r.severity, Severity::Ok);
         assert_eq!(r.score_impact, 5);
+    }
+
+    #[test]
+    fn missing_permissions_policy_returns_warning() {
+        let tmp = make_har("");
+        let report = HarScanner::scan_file(tmp.path()).unwrap();
+        let r = find(&report.results, "Permissions Policy").unwrap();
+        assert_eq!(r.severity, Severity::Warning);
+        assert_eq!(r.score_impact, -5);
+    }
+
+    #[test]
+    fn restrictive_permissions_policy_returns_ok() {
+        let tmp = make_har(
+            r#"{ "name": "permissions-policy", "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()" }"#,
+        );
+        let report = HarScanner::scan_file(tmp.path()).unwrap();
+        let r = find(&report.results, "Permissions Policy").unwrap();
+        assert_eq!(r.severity, Severity::Ok);
+        assert_eq!(r.score_impact, 5);
+    }
+
+    #[test]
+    fn wildcard_permissions_policy_returns_fail() {
+        let tmp = make_har(r#"{ "name": "permissions-policy", "value": "camera=*" }"#);
+        let report = HarScanner::scan_file(tmp.path()).unwrap();
+        let r = find(&report.results, "Permissions Policy").unwrap();
+        assert_eq!(r.severity, Severity::Fail);
+        assert_eq!(r.score_impact, -10);
     }
 
     #[test]

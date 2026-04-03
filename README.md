@@ -4,5 +4,5 @@
 
 Harbor is an offline HTTP Observatory for HAR files.
 
-It analyzes recorded HTTP responses for security headers, cookie settings, CSP, HSTS, CORS, and related browser policy issues without making live requests.
+It analyzes recorded HTTP responses for security headers, cookie settings, CSP, HSTS, Permissions-Policy, CORS, and related browser policy issues without making live requests.
 
