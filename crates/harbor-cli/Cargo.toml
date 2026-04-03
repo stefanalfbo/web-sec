@@ -1,7 +1,7 @@
 [package]
-name = "web-sec-cli"
+name = "harbor-cli"
 version = "0.1.1"
-description = "The web-sec cli, which is a web security tool."
+description = "The Harbor CLI, which is a web security tool."
 edition = { workspace = true }
 rust-version = { workspace = true }
 homepage = { workspace = true }
@@ -13,11 +13,11 @@ keywords = ["web", "security", "cli", "tool"]
 categories = ["command-line-utilities", "security"]
 
 [[bin]]
-name = "web-sec"
+name = "harbor"
 path = "src/main.rs"
 
 [dependencies]
 clap = { version = "4.5.54", features = ["derive"] }
 crossterm = "0.28"
 ratatui = "0.29"
-web-sec-core = { version = "0.1.0", path = "../web-sec-core" }
+harbor-core = { version = "0.1.0", path = "../harbor-core" }

@@ -347,6 +347,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "harbor-cli"
+version = "0.1.1"
+dependencies = [
+ "clap",
+ "crossterm",
+ "harbor-core",
+ "ratatui",
+]
+
+[[package]]
+name = "harbor-core"
+version = "0.1.0"
+dependencies = [
+ "har",
+ "tempfile",
+]
+
+[[package]]
 name = "hashbrown"
 version = "0.12.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1153,24 +1171,6 @@ dependencies = [
  "hashbrown 0.15.5",
  "indexmap 2.13.0",
  "semver",
-]
-
-[[package]]
-name = "web-sec-cli"
-version = "0.1.1"
-dependencies = [
- "clap",
- "crossterm",
- "ratatui",
- "web-sec-core",
-]
-
-[[package]]
-name = "web-sec-core"
-version = "0.1.0"
-dependencies = [
- "har",
- "tempfile",
 ]
 
 [[package]]

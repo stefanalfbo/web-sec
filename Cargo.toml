@@ -1,11 +1,11 @@
 [workspace]
-members = ["crates/web-sec-core", "crates/web-sec-cli"]
+members = ["crates/harbor-core", "crates/harbor-cli"]
 resolver = "2"
 
 [workspace.package]
 edition = "2024"
 rust-version = "1.92"
-homepage = "https://github.com/stefanalfbo/web-sec"
-repository = "https://github.com/stefanalfbo/web-sec"
+homepage = "https://github.com/stefanalfbo/harbor"
+repository = "https://github.com/stefanalfbo/harbor"
 authors = ["Stefan Alfbo <stefan.alfbo@gmail.com>"]
 license = "MIT"

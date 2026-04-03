@@ -6,6 +6,12 @@ use crossterm::{
     execute,
     terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
+use harbor_core::{
+    analysis_result::AnalysisResult,
+    har_scanner::{HarScanner, ScanReport},
+    scoring::ScanScore,
+    severity::Severity,
+};
 use ratatui::{
     Terminal,
     backend::CrosstermBackend,
@@ -13,15 +19,9 @@ use ratatui::{
     style::{Color, Modifier, Style},
     widgets::{Block, Borders, Cell, Paragraph, Row, Table},
 };
-use web_sec_core::{
-    analysis_result::AnalysisResult,
-    har_scanner::{HarScanner, ScanReport},
-    scoring::ScanScore,
-    severity::Severity,
-};
 
 #[derive(Parser)]
-#[command(name = "web-sec")]
+#[command(name = "harbor")]
 #[command(about = "Analyzes security headers in HAR files")]
 struct Cli {
     #[command(subcommand)]
@@ -112,7 +112,7 @@ fn render(frame: &mut ratatui::Frame, results: &[AnalysisResult], score: &ScanSc
         .split(area);
 
     // Title
-    let title = Paragraph::new("web-sec — Offline HTTP Observatory")
+    let title = Paragraph::new("Harbor - HAR Security Analyzer")
         .style(
             Style::default()
                 .fg(Color::Cyan)
